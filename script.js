@@ -11,11 +11,21 @@ transform: rotate(45deg);*/
 
 
 var map = L.map('map').fitWorld();
-map.locate({setView: true, maxZoom: 16});
+map.locate({ setView: true, maxZoom: 100 });
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    
+
 }).addTo(map);
 
+function onLocationFound(e) {
+    var radius = e.accuracy;
+
+    L.marker(e.latlng).addTo(map)
+        .bindPopup("You are within " + radius + " meters from this point").openPopup();
+
+    L.circle(e.latlng, radius).addTo(map);
+}
+
+map.on('locationfound', onLocationFound);
 
 
 
